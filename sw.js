@@ -1,12 +1,12 @@
 // imports
 importScripts('js/sw-utils.js');
 
-const _staticCache = "static-V3";
+const _staticCache = "static-V1";
 const _dynamicCache = "dynamic-V1";
 const _inmutableCache = "inmutable-V1";
 
 const appShell = [
-  '/',
+  // '/',
   'index.html',
   'css/style.css',
   'img/favicon.ico',
