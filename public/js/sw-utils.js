@@ -9,3 +9,17 @@ function UpdateDynamicCache(dynamicCacheName, req, res) {
     return res;
   }
 }
+
+function UpdateStaticCache(staticCacheName, req, appShellInmutable){
+  if ( appShellInmutable.includes(req.url) ) {
+    // No hace falta actualizar el inmutable
+    // console.log('existe en inmutable', req.url );
+
+} else {
+    // console.log('actualizando', req.url );
+    return fetch( req )
+            .then( res => {
+                return UpdateDynamicCache( staticCacheName, req, res );
+            });
+}
+}

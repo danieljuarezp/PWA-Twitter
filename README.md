@@ -1,3 +1,3 @@
 # Clon de Twitter
 
-Un cascarón de chat usando jQuery para PWAs
+PWA de un clon de Twiter

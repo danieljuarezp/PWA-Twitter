@@ -112,13 +112,15 @@ nuevoBtn.on('click', function() {
 
 // Boton de cancelar mensaje
 cancelarBtn.on('click', function() {
-   modal.animate({ 
-       marginTop: '+=1000px',
-       opacity: 0
-    }, 200, function() {
-        modal.addClass('oculto');
-        txtMensaje.val('');
-    });
+    if ( !modal.hasClass('oculto') ) {
+        modal.animate({ 
+            marginTop: '+=1000px',
+            opacity: 0
+         }, 200, function() {
+             modal.addClass('oculto');
+             txtMensaje.val('');
+         });
+    }
 });
 
 // Boton de enviar mensaje

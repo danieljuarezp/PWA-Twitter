@@ -23,8 +23,8 @@ const appShellInmutable = [
   'https://fonts.googleapis.com/css?family=Quicksand:300,400',
   'https://fonts.googleapis.com/css?family=Lato:400,300',
   'https://use.fontawesome.com/releases/v5.3.1/css/all.css',
-  'css/animate.css',
-  'js/libs/jquery.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'
 ];
 
 self.addEventListener("install", e => {
@@ -62,9 +62,9 @@ self.addEventListener('fetch', e =>{
   const result = caches.match( e.request )
   .then( resp => {
     if(resp){
+      UpdateStaticCache(_staticCache, e.request, appShellInmutable);
       return resp;
-    }else{
-     
+    }else{  
       return fetch(e.request)
       .then( newResp => {
         return UpdateDynamicCache(_dynamicCache, e.request, newResp);
