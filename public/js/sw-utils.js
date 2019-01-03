@@ -23,30 +23,32 @@ function UpdateStaticCache(staticCacheName, req, appShellInmutable) {
 }
 
 // Network with cache fallback / update
-function ManagementApiMessages(dynamicCacheName, req){
-
-  if(req.clone().method === 'POST'){
-    //posteo de un nuevo mensaje 
-    req.clone().text()
-    .then(body =>{
-      const bodyObj = JSON.parse(body);
-      SaveMessage(bodyObj);
-    });
-
-    return fetch(req);
-  }else{
-    return fetch(req)
-  .then(resp => {
-    if (resp.ok) {
-      UpdateDynamicCache(dynamicCacheName, req, resp.clone());
-      return resp.clone();
-    }else{
-      return caches.match(req);
+function ManagementApiMessages(dynamicCacheName, req) {
+  if (req.clone().method === "POST") {
+    //posteo de un nuevo mensaje
+    if (self.registration.sync) {
+      return req
+        .clone()
+        .text()
+        .then(body => {
+          const bodyObj = JSON.parse(body);
+          return SaveMessage(bodyObj);
+        });
+    } else {
+      return fetch(req);
     }
-  })
-  .catch(err => {
-    return caches.match(req);
-  });
-
-  } 
+  } else {
+    return fetch(req)
+      .then(resp => {
+        if (resp.ok) {
+          UpdateDynamicCache(dynamicCacheName, req, resp.clone());
+          return resp.clone();
+        } else {
+          return caches.match(req);
+        }
+      })
+      .catch(err => {
+        return caches.match(req);
+      });
+  }
 }

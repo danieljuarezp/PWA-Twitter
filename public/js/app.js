@@ -145,8 +145,8 @@ postBtn.on('click', function() {
         body: JSON.stringify(data)
     })
     .then(resp => resp.json())
-    .then(result => console.log('app.js', result))
-    .catch(err => console.error)
+    .then(console.log)
+    .catch(console.error)
 
 
     crearMensajeHTML( mensaje, usuario );

@@ -1,5 +1,5 @@
 // imports
-importScripts('https://cdn.jsdelivr.net/npm/pouchdb@7.0.0/dist/pouchdb.min.js');
+importScripts("https://cdn.jsdelivr.net/npm/pouchdb@7.0.0/dist/pouchdb.min.js");
 importScripts("js/sw-db.js");
 importScripts("js/sw-utils.js");
 
@@ -58,16 +58,12 @@ self.addEventListener("activate", e => {
 });
 
 self.addEventListener("fetch", e => {
-  
   let result;
-  
+
   if (e.request.url.includes("/api")) {
-
     result = ManagementApiMessages(_dynamicCache, e.request);
-
   } else {
-
-     result = caches.match(e.request).then(resp => {
+    result = caches.match(e.request).then(resp => {
       if (resp) {
         UpdateStaticCache(_staticCache, e.request, appShellInmutable);
         return resp;
@@ -77,8 +73,16 @@ self.addEventListener("fetch", e => {
         });
       }
     });
-
   }
 
   e.respondWith(result);
+});
+
+// Tareas asincronas
+self.addEventListener("sync", e => {
+  if (e.tag === "new-message") {
+    // Postear a db cuando hay conexion
+   const response = PostMessage();
+    e.waitUntil(response);
+  }
 });
