@@ -7,7 +7,6 @@ const messages = [];
 
 // Get mensajes
 router.get('/', function (req, res) {
-  //res.json('Obteniendo mensajes');
   res.json(messages);
 });
 

@@ -1,4 +1,6 @@
 // imports
+importScripts('https://cdn.jsdelivr.net/npm/pouchdb@7.0.0/dist/pouchdb.min.js');
+importScripts("js/sw-db.js");
 importScripts("js/sw-utils.js");
 
 const _staticCache = "static-V1";
@@ -24,7 +26,8 @@ const appShellInmutable = [
   "https://fonts.googleapis.com/css?family=Lato:400,300",
   "https://use.fontawesome.com/releases/v5.3.1/css/all.css",
   "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css",
-  "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+  "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js",
+  "https://cdn.jsdelivr.net/npm/pouchdb@7.0.0/dist/pouchdb.min.js"
 ];
 
 self.addEventListener("install", e => {
