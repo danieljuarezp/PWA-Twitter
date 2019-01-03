@@ -11,6 +11,7 @@ const appShell = [
   // '/',
   "index.html",
   "css/style.css",
+  "css/mdtoast.min.css",
   "img/favicon.ico",
   "img/avatars/hulk.jpg",
   "img/avatars/ironman.jpg",
@@ -18,7 +19,9 @@ const appShell = [
   "img/avatars/thor.jpg",
   "img/avatars/wolverine.jpg",
   "js/app.js",
-  "js/sw-utils.js"
+  "js/sw-db.js",
+  "js/sw-utils.js",
+  "js/mdtoast.min.js"
 ];
 
 const appShellInmutable = [

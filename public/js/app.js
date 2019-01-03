@@ -165,3 +165,28 @@ function GetMessages(){
 }
 
 GetMessages();
+
+// Detectar cambios de conexion
+function IsOnline(){
+
+    if(navigator.onLine){
+        // Si tiene conexion
+        mdtoast('Estas conectado a internet', {
+            type: mdtoast.SUCCESS, 
+            interaction: true, 
+            interactionTimeout: 1000,
+            actionText: 'OK!'
+          });       
+    } else{
+        mdtoast('No estas conectado a internet', {
+            type: mdtoast.ERROR, 
+            interaction: true, 
+            actionText: 'OK!'
+          });
+    }
+}
+
+window.addEventListener('online', IsOnline);
+window.addEventListener('offline', IsOnline);
+
+IsOnline();
