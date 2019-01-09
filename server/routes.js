@@ -28,8 +28,10 @@ router.post('/', function (req, res) {
 });
 
 // Almacenar la suscribcion de notificaciones
-router.post('/suscribe', (req, res) =>{
-  res.json('suscribe');
+router.post('/subscribe', (req, res) =>{
+ const subscription = req.body;
+ push.AddSubscription(subscription);
+  res.json('subscribe');
 });
 
 // Obtener el key publico

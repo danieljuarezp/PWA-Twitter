@@ -24,7 +24,10 @@ function UpdateStaticCache(staticCacheName, req, appShellInmutable) {
 
 // Network with cache fallback / update
 function ManagementApiMessages(dynamicCacheName, req) {
-  if (req.clone().method === "POST") {
+
+  if((req.url.indexOf('/api/key') >= 0) || (req.url.indexOf('/api/subscribe') >= 0))  {
+    return fetch(req);
+  }else if (req.clone().method === "POST") {
     //posteo de un nuevo mensaje
     if (self.registration.sync) {
       return req

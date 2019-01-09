@@ -1,9 +1,16 @@
 
 var url = window.location.href;
+var swRegister;
 
 // Registramos SW
-if(navigator.serviceWorker){
-    navigator.serviceWorker.register('/sw.js');
+if(navigator.serviceWorker) {
+    
+    window.addEventListener('load', function(){
+        navigator.serviceWorker.register('/sw.js').then(function(register){
+            swRegister = register;
+            swRegister.pushManager.getSubscription().then( VerifySuscription );
+        });
+    })
 }
 
 // Referencias de jQuery
@@ -192,6 +199,7 @@ IsOnline();
 
 // Notificaciones
 function VerifySuscription(enabled){
+
     if(enabled){
         btnEnableNotification.removeClass('oculto');
         btnDisableNotification.addClass('oculto');
@@ -200,8 +208,6 @@ function VerifySuscription(enabled){
         btnDisableNotification.removeClass('oculto');
     }
 }
-
-VerifySuscription();
 
 function SendNotification(){
     const notificationOpt = {
@@ -240,11 +246,34 @@ function NotificationMe(){
 
 // NotificationMe();
 
-// Obtener llave
+// Obtener llave publica de la suscripcion de las notificaciones
 function GetPublicKey(){
     return fetch('api/key')
     .then(resp => resp.arrayBuffer())
     .then(key => new Uint8Array(key));
 }
 
-GetPublicKey().then(console.log);
+btnDisableNotification.on('click', function(){
+    if( !swRegister ) return console.log('Error en el service worker');
+
+    GetPublicKey().then(function(key) {
+        swRegister.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: key
+        })
+        .then(res => res.toJSON())
+        .then(suscription => {   
+            
+            fetch('api/subscribe',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(suscription)
+            })
+            .then(VerifySuscription)
+            .catch(console.error)
+
+        });
+    });
+});
