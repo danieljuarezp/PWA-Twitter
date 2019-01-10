@@ -14,11 +14,14 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   
   const message = {
+    title: 'Nuevo Mensaje',
     message: req.body.message,
     user: req.body.user
   };
 
   messages.push(message);
+
+  push.SendNotification(message);
 
   res.json({
     ok: true,
@@ -41,10 +44,11 @@ router.get('/key', (req, res) =>{
 });
 
 // Enviar notificacion push
+// solo para desarrollo sirve
 router.post('/push', (req, res) =>{
   
   const notification = {
-    tittle: req.body.tittle,
+    title: req.body.title,
     message: req.body.message,
     user: req.body.user
   };

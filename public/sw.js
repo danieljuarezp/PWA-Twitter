@@ -92,10 +92,58 @@ self.addEventListener("sync", e => {
 
 // Escuchar push
 self.addEventListener('push', e => {
-  console.log(e.data.text())
+  const data = JSON.parse( e.data.text());
+  const title = data.title;
+  const options = {
+    body: data.message,
+    icon: `img/avatars/${data.user}.jpg`,
+    badge: "img/favicon.ico",
+    vibrate: [125,75,125,275,200,275,125,75,125,275,200,600,200,600],
+    openUrl: '/',
+    data: {
+      url: '/',
+      id: data.user
+    },
+    actions: [
+      {
+        action: 'action1',
+        title: 'Accion 1',
+        icon: 'img/icons/icon-72x72.png'
+      },
+      {
+        action: 'action2',
+        title: 'Accion 2',
+        icon: 'img/icons/icon-96x96.png'
+      }
+    ]
+  };
 
-  const tittle = e.data.text();
-  const options = {};
+  e.waitUntil(self.registration.showNotification(title,options));
+});
 
-  e.waitUntil(self.registration.showNotification(tittle,options));
+// Al cerrar notificacion
+self.addEventListener('notificationclose', e =>{
+  console.log('notificacion cerrada', e)
+});
+
+self.addEventListener('notificationclick', e =>{
+  const notification = e.notification;
+  const action = e.action;
+
+  const resp = clients.matchAll().then(tabs =>{
+    let tab = tabs.find(client =>{
+      return client.visibilityState === 'visible';
+    });
+
+    if(tab !== undefined){
+      tab.navigate(notification.data.url);
+      tab.focus();
+    }else{
+      clients.openWindow( notification.data.url );
+    }
+    
+    return notification.close();
+  });
+
+  e.waitUntil(resp);
 });
