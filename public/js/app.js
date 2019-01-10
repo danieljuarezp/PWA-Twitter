@@ -272,8 +272,21 @@ btnDisableNotification.on('click', function(){
                 body: JSON.stringify(suscription)
             })
             .then(VerifySuscription)
-            .catch(console.error)
+            .catch(CancelSubscriptionNotifications)
 
         });
     });
+});
+
+function CancelSubscriptionNotifications(){
+    swRegister.pushManager.getSubscription()
+    .then(subs => {
+        subs.unsubscribe()
+        .then(() => VerifySuscription(false) );
+    })
+}
+
+
+btnEnableNotification.on('click', function(){
+    CancelSubscriptionNotifications();
 });
